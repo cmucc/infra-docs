@@ -5,7 +5,7 @@ Everything about our daemon engines.
 
 (Our daemon engines are a collection of bare-metal servers,
 which are all designated for the same particular purpose,
-described in :doc:`Concepts`)
+described in :doc:`concepts`)
 
 .. toctree::
    :maxdepth: 2

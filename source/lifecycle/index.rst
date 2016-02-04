@@ -4,14 +4,14 @@ The Lifecycle of Club Servers
 What goes into setting up and tearing down club servers,
 both virtual and physical?
 
-Things need:
-- A name
-- Network
-- DNS entries
-- Some degree of Clubification (i.e. integration with other services)
-- An existence (virtual on engine, virtual on KVM, or physical)
-
-TODO: port all of these here
+Everything in our room has:
+- A name; see :doc:`names`
+- Network; see :doc:`network`
+- DNS entries; see :doc:`dns`
+- An operating system; see :doc:`installer`
+- A means of remote access; see :doc:`console`
+- Some degree of Clubification, possibly zero; see :doc:`clubify`
+- An existence; see :doc:`hosts`
 
 .. toctree::
    :maxdepth: 2
@@ -19,6 +19,8 @@ TODO: port all of these here
    names
    network
    dns
+   installer
+   console
    clubify
    hosts
    decommission

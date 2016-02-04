@@ -12,6 +12,7 @@ described in :doc:`concepts`)
 
    concepts
    creation
+   accounts
    virtualization
    ipv6
    nix

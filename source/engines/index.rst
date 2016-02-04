@@ -14,7 +14,7 @@ described in :doc:`concepts`)
    creation
    accounts
    virtualization
-   ipv6
+   network
    nix
    local_storage
    network_storage

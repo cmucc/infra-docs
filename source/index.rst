@@ -45,6 +45,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   lifecycle/index
    engines/index
    accounts/index
    philosophy/index

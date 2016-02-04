@@ -46,6 +46,7 @@ Contents:
    :maxdepth: 2
 
    engines/index
+   accounts/index
    philosophy/index
 
 

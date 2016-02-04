@@ -8,9 +8,6 @@ CMU Computer Club Infrastructure Documentation
 
 Contents:
 
-.. toctree::
-   :maxdepth: 2
-
    New Member Documentation
      IRC
      Email lists
@@ -24,7 +21,7 @@ Contents:
      Mirrors
      PXE Network Boot Server
      NetReg
-  Monitoring
+   Monitoring
      Nagios
      Environmental conditions monitoring
      Mail
@@ -45,7 +42,11 @@ Contents:
      .. todo:: Change names
      Website
 
+.. toctree::
+   :maxdepth: 2
 
+   engines/index
+   philosophy/index
 
 
 Indices and tables

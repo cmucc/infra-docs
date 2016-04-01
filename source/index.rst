@@ -6,6 +6,9 @@
 CMU Computer Club Infrastructure Documentation
 ==========================================================================
 
+TODO:
+services section
+
 Contents:
 
    New Member Documentation

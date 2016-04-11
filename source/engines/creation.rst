@@ -20,7 +20,7 @@ it requires the following steps:
    # 5. Set up nat-bridge with system-wide libvirt, see :doc:`network`
    # 6. Set up forward-bridge, see :doc:`network`
    # 7. Configure qemu-bridge-helper to allow access to the two bridges in /etc/qemu/bridge.conf
-   chmod u+s /usr/lib/qemu/qemu-bridge-helper
+   dpkg-statoverride --update --add root root 4755 /usr/lib/qemu/qemu-bridge-helper
    echo "allow br0" >> /etc/qemu/bridge.conf
    echo "allow virbr0" >> /etc/qemu/bridge.conf
    ln -s /usr/lib/qemu/qemu-bridge-helper /usr/bin/

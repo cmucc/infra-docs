@@ -12,10 +12,8 @@ Basic Clubification, just to get Kerberos auth:
     ## Enable SSH login with Kerberos tickets (by creating a host key)
     # get kadmin tickets (requires manually typing in /admin password)
     kinit -S kadmin/admin $CCLUB_USER/admin
-    # create a Kerberos principal for this machine (accept all defaults)
-    kadmin ank -r host/$HOSTNAME.club.cc.cmu.edu
-    # add the secret key for that Kerberos principle to this machine's keytab
-    kadmin ext_keytab host/$HOSTNAME.club.cc.cmu.edu
+    # Get a Kerberos principal for this machine (accept all defaults)
+    ktutil get host/$HOSTNAME.club.cc.cmu.edu
     # actually enable Kerberos authentication
     echo 'GSSAPIAuthentication yes' >> /etc/ssh/sshd_config
     echo 'GSSAPIKeyExchange yes' >> /etc/ssh/sshd_config

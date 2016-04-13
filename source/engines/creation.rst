@@ -23,7 +23,7 @@ it requires the following steps:
    dpkg-statoverride --update --add root root 4755 /usr/lib/qemu/qemu-bridge-helper
    echo "allow br0" >> /etc/qemu/bridge.conf
    echo "allow virbr0" >> /etc/qemu/bridge.conf
-   ln -s /usr/lib/qemu/qemu-bridge-helper /usr/bin/
+   ln -s /usr/lib/qemu/qemu-bridge-helper /usr/bin/qemu-bridge-helper
    # 8. Insert some configuration files into /etc/skel so new user accounts are set up properly
    mkdir -p /etc/skel/.config/libvirt/qemu/networks/autostart
    cat >/etc/skel/.config/libvirt/qemu/networks/nat-bridge.xml <<XML_EOF

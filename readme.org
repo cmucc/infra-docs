@@ -1,0 +1,213 @@
+# Note: Explicitly separate things that are specific to the CClub environment, from things that are generally applicable.
+* Where am I?
+  You're on a CMU Computer Club "daemon engine", useful for hosting long-running network services, virtual machines, containers, or whatever you want!
+
+  This README exclusively describes running virtual machines, since that's what people generally use these hosts for.
+
+  If you have any questions, complaints, comments, or requests, feel free to email us at operations@club.cc.cmu.edu
+* Basic VM management commands
+Use virsh help [SUBCOMMAND] on these, I guess, or man virsh.
+- virsh list --all
+- virsh start [VM NAME]
+- virsh shutdown [VM NAME]
+- virsh console [VM NAME]
+  Requires some configuration to serve a console over serial, check the FAQ if you want to set it up.
+* Other useful commands and information
+** virsh
+The XML configuration for the VM is in ~/.config/libvirt/qemu/
+It can be retrieved with =virsh dumpxml $VM_NAME=.
+Disk images are in ~/.local/libvirt/images/
+*** useful commands
+    Use virsh help [COMMAND] on these, I guess, or man virsh.
+    - start
+    - shutdown
+    - suspend
+    - resume
+    - console
+      Very useful! Gives you a serial console on the VM!
+    - list
+*** deleting a vm
+    To immediately power off the VM without waiting for it to shut down,
+    =virsh destroy=.
+
+    After the VM is off,
+    to remove its definition and permanently delete all of its storage,
+    =virsh undefine --remove-all-storage=
+** guestmount/guestunmount
+*** Inspect VM filesystem directly
+
+#+begin_src sh
+# When the VM is down,
+guestmount -d $MYVMNAME -i ~/mnt
+# and the filesystem of the VM will show up in ~/mnt
+# then when you're done
+guestunmount ~/mnt
+# and then you can restart the VM
+#+end_src
+
+** Remote access with virt-manager GUI
+Run this command to generate the libvirt URI you need to use for remote access:
+
+#+begin_src sh
+echo qemu+ssh://$USER@$HOSTNAME.club.cc.cmu.edu/session?socket=/run/user/$UID/libvirt/libvirt-sock
+#+end_src
+
+Let's break it down a little:
+- =qemu+ssh://= indicates you want to use ssh to remotely access a QEMU VM host.
+- =$USER@$HOSTNAME.club.cc.cmu.edu=
+  should be exactly what you typed after =ssh= to log in to this server in the first place.
+- =/session=
+  specifies that you want to use the "user session" variant of QEMU/libvirt virtualization,
+  rather than system-wide VMs only accessible to root.
+- =?socket=/run/user/$UID/libvirt/libvirt-sock=
+  explicitly specifies how to talk to the long-running libvirt daemon;
+  this is a just-in-case workaround for possible bugs.
+
+For remote access with =virsh=, use it with
+#+begin_src sh
+virsh -c 'thaturl' list
+#+end_src
+There's some configuration you can do to change the default libvirt URI, or alias them, so you don't have to specify that long URI every time.
+Check the manpage.
+
+For the virt-manager GUI, do
+#+begin_src sh
+virt-manager --connect='thaturl'
+#+end_src
+After you run virt-manager manually like this once, the URI will be saved so you can just run it normally afterwards.
+
+* Making new VMs
+  You do this with =virt-install=.
+  The manpage is helpful, and it's a pretty good tool, so I would encourage reading the manpage.
+
+  But if you just want to get started quickly,
+  here's an example command.
+  NOTE: This example command is missing the command line argument that will give the resulting VM network access.
+  Look at the "Available networks" section of this document to know what to add to get network access.
+
+#+begin_src sh
+virt-install \
+  --name vmname --description description \
+  --memory 512 --disk size=10 \
+  --extra-args '--- console=ttyS0' --graphics none \
+  --location http://ftp.us.debian.org/debian/dists/stable/main/installer-amd64/
+#+end_src
+
+   You might find you don't know how to actually log in to your VM after this;
+   you might not actually know the IP address.
+   Check the FAQ.
+
+** virt-builder
+   This tool just builds VM disk images from a template.
+   It can be helpful if you want to make VMs quickly or automatically,
+   without going through the installer process with =virt-install=.
+* Available networks
+There are two different networks listed by =virsh net-list=.
+They have different features, pick what is best for you.
+
+Here's a quick comparison of the two:
+
+|                                 | forward | nat |
+|---------------------------------+---------+-----|
+| Usable without talking to CClub | No      | Yes |
+| VM configuration is automatic   | Yes     | Yes |
+| IPv4 network connectivity       | Yes     | Yes |
+| IPv4 public address             | Yes     | No  |
+| IPv6 network connectivity       | No      | Yes |
+| IPv6 public address             | No      | Yes |
+
+** forward-bridge
+This is a bridge which forwards to the CClub physical network.
+To use this network, you must co-ordinate with CClub by using a specific MAC address allocated to you for your VM's network interface.
+The major benefit, of course, is that you will have an actual public IPv4 address.
+
+*** Actually using this
+    You should send email to operations@club.cc.cmu.edu requesting a new IP and describing what you'll use it for.
+    (It's not an application process, we're just curious what you're using it for, and might try persuading you to use nat-bridge instead.)
+    If we have failed to persuade you,
+    then someone will give you a MAC address,
+    which you will specify when making the VM.
+
+    Then you provide the following option on the command-line to virt-install.
+
+#+begin_src sh
+--network network=forward-bridge,mac=yo:ug:ot:fr:om:us
+#+end_src
+
+    Naturally you should replace =yo:ug:ot:fr:om:us= with the MAC you got from us.
+
+** nat-bridge
+This is a virtual network which provides IPv4 network connectivity through NAT,
+but also automatically provides public IPv6 address to all VMs using it.
+You don't need to co-ordinate with CClub to use this network.
+But, you won't have an actual public IPv4 address.
+You will have a public IPv6 address though!
+
+If the only kind of service you want to host is HTTP/HTTPS,
+then you might want to consider just using this network.
+You can stick Cloudflare in front of the public IPv6 address,
+which will allow people who only have IPv4 connectivity to use the websites hosted on your VM.
+
+*** Actually using this
+    Just provide the following option on the command-line to virt-install.
+
+#+begin_src sh
+--network network=nat-bridge
+#+end_src
+
+    No need to do anything else!
+*** Using Cloudflare for IPv4 HTTP/HTTPS access
+    If you have your own domain name,
+    it's very easy to set it up with Cloudflare and start proxying HTTP requests to the server.
+
+    If you're using a subdomain of =cmu.io=,
+    or are planning on doing that,
+    then you can just ask us to turn on Cloudflare, without needing to set anything up yourself.
+
+* Getting a domain name
+  If you need a domain name and you don't have one, you can ask us for a subdomain of =cmu.io=.
+  Send mail to operations@club.cc.cmu.edu with the subdomain you want (i.e. =name.cmu.io=)
+  and the IP address of the VM,
+  and we'll point that subdomain at that IP address.
+
+* FAQ: How do I
+** log in to my VM/find out my VM's IP address?
+   If you can already log in to your VM, you can just run =ip addr=.
+
+   But if you want to learn the IP address from outside the VM, possibly so you can ssh in,
+   then try running the following command, which will output the IP addresses:
+
+#+begin_src sh
+ip neighbour | grep -Ff <(virsh dumpxml $MYVMNAME | xpath -q -e '//mac/@address' | cut -d '"' -f 2) | cut -d ' ' -f 1
+#+end_src
+
+   Ignore any IP addresses starting with 'fe80', those aren't really real.
+   Pick any of the remaining addresses and ssh to it.
+
+   (The =<()= thing is called "process substitution", if you're trying to understand what this command does.)
+** configure a serial console for use with =virsh console=?
+
+   Ask a CClub member, it kind of strongly depends on your distro.
+
+   A technique that generally works is to append console=ttyS0 to your kernel command line arguments.
+
+** reset my VM's root password?
+   Use =guestmount= to mount the VM's filesystem at =~/mnt= (or anywhere), then use =passwd -R ~/mnt=.
+
+   Oh, turns out =passwd -R ~/mnt= both isn't available on some hosts, and requires root privileges to do chroot.
+
+   So instead, Google how to manually edit =/etc/shadow=, and edit =~/mnt/etc/shadow=.
+
+* Technical Explanation Of What Is Going On
+  You are using virsh/libvirt with the libvirt URL "qemu://session".
+  This allows running full virtual machines without root privileges.
+  - QEMU can run fine without root
+  - QEMU only needs to be able to write to /dev/kvm to use hardware virtualization (and thereby go fast)
+  - QEMU uses qemu-bridge-helper, a setuid program, to configure networking. On this machine,
+    forward-bridge and nat-bridge are whitelisted in the configuration file for qemu-bridge-helper, =/etc/qemu/bridge.conf=,
+    and thereby usable without privileges.
+  Thanks to these three facts, libvirt is able to run fast networked VMs with
+  QEMU without root privileges, in the "QEMU user session" mode of libvirt.
+
+  Our goal is to provide the simplest, most flexible system, and let people do whatever they want with it, including building other tools on top.
+  If that sounds like something you might want to work on, feel free to come by any Computer Club meeting and help us out!

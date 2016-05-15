@@ -1,4 +1,4 @@
-Jabber
+Kerberos
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our Kerberos deployment here.

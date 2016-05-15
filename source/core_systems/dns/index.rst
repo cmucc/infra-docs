@@ -1,4 +1,4 @@
-Jabber
+DNS
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our DNS server and practices here.

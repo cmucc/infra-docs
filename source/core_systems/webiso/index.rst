@@ -1,4 +1,4 @@
-Jabber
+WebISO
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our single sign-on service here.

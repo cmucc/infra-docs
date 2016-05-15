@@ -1,4 +1,4 @@
-Jabber
+Usenet
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our usenet servers here.

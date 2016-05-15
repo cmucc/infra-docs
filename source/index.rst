@@ -6,52 +6,19 @@
 CMU Computer Club Infrastructure Documentation
 ==========================================================================
 
-TODO:
-services section
-
-Contents:
-
-   New Member Documentation
-     IRC
-     Email lists
-   Core Systems
-     Kerberos
-     LDAP
-     AFS
-     DNS
-     KVM
-     Console Network
-     Mirrors
-     PXE Network Boot Server
-     NetReg
-   Monitoring
-     Nagios
-     Environmental conditions monitoring
-     Mail
-     WebISO
-     Jabber
-   User Facing Services
-     Contributed Hosting
-     Contributed Packages
-     Shells
-     Usenet
-   Security-related topics
-     Root password generation and usage
-     TLS certificates
-   Miscellaneous
-     Club packages
-     Machine room documentation
-     Scripting all machines
-     .. todo:: Change names
-     Website
-
 .. toctree::
    :maxdepth: 2
 
-   lifecycle/index
-   engines/index
-   accounts/index
-   philosophy/index
+   accounts/index.rst
+   communications/index.rst
+   machine_lifecycle/index.rst
+   core_systems/index.rst
+   user_facing_services/index.rst
+   monitoring/index.rst
+   security/index.rst
+   misc/index.rst
+   website
+   philosophy/index.rst
 
 
 Indices and tables

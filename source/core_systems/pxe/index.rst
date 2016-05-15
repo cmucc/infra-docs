@@ -1,4 +1,4 @@
-Jabber
+PXE
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our PXE (network boot) setup here.

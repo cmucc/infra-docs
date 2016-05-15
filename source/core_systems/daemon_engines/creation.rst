@@ -34,6 +34,7 @@ Install etckeeper
 See the clubification page for justification.
 
 .. code-block:: sh
+
    apt-get install etckeeper
 
 Clubification
@@ -45,7 +46,7 @@ ZFS Setup
 =================
 
 Install ZFS packages
-------------------
+----------------------
 
 **Note:** This process is subject to change as ZFS on Linux gains increasing
 adoption.  In particular, there are vague plans to get ZFS on Linux source
@@ -54,6 +55,8 @@ packages into Debian (but not binaries, due to licensing conflicts).
 Follow the instructions on http://zfsonlinux.org/debian.html.
 If they say anything about the Debian project having added source packages,
 update these instructions or get someone else to do so.
+
+NOTE: DEBIAN CONTRIB PACKAGES NOW AVAILABLE
 
 Setup zpool
 ------------------
@@ -64,6 +67,7 @@ and enable lz4 compression by default on the zpool's root filesystem.
 (Replace ``/dev/sda6`` and ``/dev/sdb6`` with the ZFS partitions)
 
 .. code-block:: sh
+
    zpool create tank mirror sda6 sdb6
    zfs set compression=lz4 tank
 
@@ -73,6 +77,7 @@ Setup filesystems
 Create a filesystem for ``/home``.
 
 .. code-block:: sh
+
    zfs create tank/home -o mountpoint=/home
 
 Create a filesystem for the OpenAFS cache, with a refreservation equal to
@@ -80,21 +85,23 @@ the cache size to ensure that the cache cannot run out of space.
 Replace "100M" if the value set differs.
 
 .. code-block:: sh
+
    zfs create tank/afs_cache -o mountpoint=/var/cache/openafs refreservation=100M
 
 Local home directories
-=================
+========================
 
 Add the following line to ``/etc/nslcd.conf``:
 
-.. code-block:: conf
+.. code-block:: apache
+
    map passwd homeDirectory "/home/$uid"
 
 KVM
 =================
 
 Configure apt-pinning
-------------------
+----------------------
 
 There is unfortunately a very nasty bug relating to how ``virt-resize`` handles
 extended partitions that is only fixed in Debian testing.[#]_[#]_[#]_
@@ -109,12 +116,13 @@ while running Debian stable.
 **TODO** Fix this
 
 Install virtualization packages
-------------------
+-------------------------------
 
 Install libvirt packages and
 allow unprivileged access to ``/dev/kvm`` using udev.
 
 .. code-block:: sh
+
    apt-get install libvirt-bin virtinst
    echo '# make kvm publicly accessible' > /etc/udev/rules.d/60-qemu-system-common.rules
    echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666"' > /etc/udev/rules.d/60-qemu-system-common.rules
@@ -136,42 +144,47 @@ Then add the following snippet of XML to
 **but substituting in the prefix received from Hurricane Electric**.
 
 .. code-block:: xml
+
    <ip family='ipv6' address='2001:dead:beef:a::1' prefix='64'/>
 
 forward-bridge setup
-------------------
+---------------------
 
 Add this to ``/etc/network/interfaces``:
 
-.. code-block:: conf
-  iface eth0 inet manual
+.. code-block:: apache
 
-  auto br0
-  iface br0 inet dhcp
-	bridge_ports eth0
-	bridge_stp off
+   iface eth0 inet manual
+
+   auto br0
+   iface br0 inet dhcp
+	 bridge_ports eth0
+	 bridge_stp off
 
 Then run
 
 .. code-block:: sh
+
   systemctl restart networking
 
 qemu-bridge-helper setup
-------------------
+-------------------------
 
 Configure qemu-bridge-helper to allow access to the two bridges in
 ``/etc/qemu/bridge.conf``:
 
 .. code-block:: sh
+
    dpkg-statoverride --update --add root root 4755 /usr/lib/qemu/qemu-bridge-helper
    echo "allow br0" >> /etc/qemu/bridge.conf
    echo "allow virbr0" >> /etc/qemu/bridge.conf
    ln -s /usr/lib/qemu/qemu-bridge-helper /usr/bin/qemu-bridge-helper
 
 /etc/skel configuration
-------------------
+------------------------
 
 .. code-block:: sh
+
    # Create the necessary directories
    mkdir -p /etc/skel/.config/libvirt/qemu/networks/autostart
    # Add the definitions of the nat-bridge and the forward-bridge

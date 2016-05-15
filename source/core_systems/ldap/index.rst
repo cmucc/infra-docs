@@ -1,4 +1,4 @@
-Jabber
+LDAP
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our LDAP deployment here.

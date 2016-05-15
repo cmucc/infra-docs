@@ -1,4 +1,4 @@
-Jabber
+Mirrors
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our mirrors of the Debian archives and other things.

@@ -1,4 +1,4 @@
-Jabber
+Contributed packages
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our contributed packages service here.

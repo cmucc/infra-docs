@@ -10,7 +10,7 @@ Make sure when in the Debian installer,
 that you select to install an ssh server, and not a desktop environment...
 
 PXE (for both virtual and physical machines)
-=====
+=============================================
 
 This is the nicest option as it works with both virtual and physical machines.
 Note that it does require that you specify a (correct) MAC address in NetReg
@@ -27,7 +27,7 @@ For virtual machines, pass ``--pxe`` to ``virt-install``.
 Unfortunately PXE might not actually be working for VMs for some reason...
 
 Load distro installer directly in VM
-=============================
+====================================
 
 ``virt-install --location`` someURL
 
@@ -45,7 +45,7 @@ So:
 ``--location http://www.club.cc.cmu.edu/pub/debian/dists/stable/main/installer-amd64/``
 
 ISO directly to VM
-========
+====================
 
 ``virt-install --cdrom`` isoPath
 
@@ -53,7 +53,7 @@ Should be self-explanatory.
 
 
 ISO on physical CD
-===
+===================
 
 Obviously only applies to physical machines.
 
@@ -61,7 +61,7 @@ We have some CDs, and a CD burner.
 Download an ISO, burn it to the CD, and stick it in a physical machine!
 
 ISO on physical USB
-=====
+===================
 
 Obviously only applies to physical machines.
 

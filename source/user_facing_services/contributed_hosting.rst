@@ -1,4 +1,4 @@
-Jabber
+Contributed hosting
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our contributed hosting service.

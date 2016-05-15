@@ -6,6 +6,7 @@ Integrating with Club Services (Clubification)
 
 Basic Clubification, just to get Kerberos auth:
 .. code-block:: sh
+
     ## Install Kerberos for authentication of users
     apt-get install heimdal-clients libpam-heimdal ntp
 

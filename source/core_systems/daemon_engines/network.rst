@@ -11,18 +11,18 @@ This is just a Linux bridge (generally ``br0``) connected to our physical networ
 set up with ``/etc/network/interfaces``.
 It means your VM is exactly as functional as a physical machine when it comes to networking.
 
-To actually use this, you'll need to make a NetReg entry for a VM; see :doc:`/lifecycle/network`.
+To actually use this, you'll need to make a NetReg entry for a VM; see :doc:`/misc/netreg`.
 
 After you have a NetReg entry and a corresponding MAC address,
 you can use this network by adding this argument to ``virt-install``:
 ``--network network=forward-bridge,mac=yo:ug:ot:fr:om:nr``
 
 forward-bridge setup
-------------------
+-----------------------
 
     Add this to /etc/network/interfaces and do ``systemctl restart networking``:
 
-.. code-block:: conf
+.. code-block:: apache
 
     iface eth0 inet manual
 

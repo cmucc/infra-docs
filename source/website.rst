@@ -1,4 +1,4 @@
-Jabber
+Website
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our website configuration here.

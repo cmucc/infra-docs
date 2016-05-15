@@ -10,11 +10,11 @@ Daemon engine
 
 This is your best bet for VMs.
 Make sure you're familiar with the concepts behind the daemon engines;
-see :doc:`/engines/concepts`.
+see :doc:`/core_systems/daemon_engines/index`.
 
 Then, what you need to do is either pick an existing user account to create the VM under,
 or create a new user account on some daemon engine to start the VM.
-You can read about that in :doc:`/engines/accounts`.
+You can read about that in :doc:`/core_systems/daemon_engines/accounts`.
 
 Physical box
 =============

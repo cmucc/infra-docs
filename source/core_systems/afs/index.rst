@@ -1,4 +1,4 @@
-Jabber
+AFS
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our AFS deployment here.

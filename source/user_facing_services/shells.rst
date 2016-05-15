@@ -1,4 +1,4 @@
-Jabber
+Shell servers
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our shell server configuraton here.

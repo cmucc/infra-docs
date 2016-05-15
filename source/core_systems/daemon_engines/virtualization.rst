@@ -35,10 +35,12 @@ The primary entry point command for manipulating existing VMs is ``virsh``.
 Just read the manpage.
 
 For creating new VMs, you use ``virt-install``.
-See :doc:`network`, :doc:`installer`, and the manpage.
+See :doc:`network`, :doc:`/machine_lifecycle/installer`, and the manpage.
 
 Here's an example invocation, sans network:
+
 .. code-block:: sh
+
    virt-install \
      --name vmname --description description \
      --memory 512 --disk size=10 \
@@ -59,7 +61,8 @@ Libvirt has nice remote access features.
 Run this command to generate the libvirt URI you need to use for remote access:
 
 .. code-block:: sh
-   echo qemu+ssh://$USER@$HOSTNAME.club.cc.cmu.edu/session?socket=/run/user/$UID/libvirt/libvirt-sock 
+
+   echo qemu+ssh://$USER@$HOSTNAME.club.cc.cmu.edu/session?socket=/run/user/$UID/libvirt/libvirt-sock
 
 Let's break it down a little:
 
@@ -76,6 +79,7 @@ Let's break it down a little:
 For remote access with =virsh=, use that URI with:
 
 .. code-block:: sh
+
    virsh -c 'thaturi' list
 
 There's some configuration you can do to change the default libvirt URI, or alias them,
@@ -85,6 +89,7 @@ Check the manpage.
 For the virt-manager GUI, use that URI with:
 
 .. code-block:: sh
+
    virt-manager --connect='thaturi'
 
 After you run virt-manager manually like this once, the URI will be saved so you can just run it normally afterwards.
@@ -99,6 +104,7 @@ so it's better to have libvirt handle it for production.
 But nevertheless, the following command (or an appropriate variation thereof) will work:
 
    .. code-block:: sh
+
       qemu-system-x86_64 -enable-kvm \
         -kernel /boot/vmlinuz-3.16.0-4-amd64 \
 	-initrd /boot/initrd.img-3.16.0-4-amd64 \

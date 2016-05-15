@@ -1,4 +1,4 @@
-Jabber
+Mail
 ==========================================================================
 
-Document our broken Jabber server.
+Describe our (qmail?) deployment here.

@@ -1,4 +1,3 @@
-================================================================================
 Networking
 ================================================================================
 
@@ -74,18 +73,12 @@ There is a tunnel configured on each daemon engine.
 It would probably be better to instead have a single tunnel on some router,
 which can run IPv6 stateless autoconfig to give IPv6 address to everything in the room.
 But that's slightly more annoying to set up.
-Also, the tunnels have a bandwidth limit, and multiple tunnels mitigates that.
-
-IPv6 tunneling setup
----------------------
-
-1. Allocate tunnel on https://www.tunnelbroker.net/
-2. Copy and paste their Debian/Ubuntu configuration into ``/etc/network/interfaces``
+Also, the tunnels have a bandwidth limit (source?), and multiple tunnels mitigates that.
 
 Cloudflare
 ==========
 
-The Cloudflare login information is in ``/afs/club/admin/passwords/``;
+The Cloudflare login information is in ``/afs/club.cc.cmu.edu/admin/passwords/``;
 you can use that and make a DNS AAAA record on Cloudflare to use IPv4-to-IPv6 proxying,
 for use with nat-bridge.
 

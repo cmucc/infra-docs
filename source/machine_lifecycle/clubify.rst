@@ -58,6 +58,7 @@ LDAP and Kerberos
    # Note the quotes
    echo -e '#!/bin/bash\n'"getent group wheel | cut -d : -f 4 | tr , '\\\\n' | sed 's/$/\/root@CLUB.CC.CMU.EDU/' > /root/.k5login" > /etc/cron.hourly/update-root-k5login
    chmod 755 /etc/cron.hourly/update-root-k5login
+
    # Make ksu setuid root, so it can be used like sudo -i to get root privileges
    dpkg-statoverride --update --add root root 4755 /usr/bin/ksu
 
@@ -69,6 +70,9 @@ Note that AFS should only be installed on appropriate machines.
 .. code-block:: sh
 
    apt-get install openafs-client libpam-afs-session openafs-krb5
+
+Note that you should set the AFS cell to `club.cc.cmu.edu` and the cache size
+to a reasonable value like 100000 kilobytes (100 megabytes).
 
 Miscellaneous
 ---------------------------

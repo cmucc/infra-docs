@@ -86,7 +86,7 @@ Replace "100M" if the value set differs.
 
 .. code-block:: sh
 
-   zfs create tank/afs_cache -o mountpoint=/var/cache/openafs refreservation=100M
+   zfs create tank/afs_cache -o mountpoint=/var/cache/openafs -o refreservation=100M
 
 Local home directories
 ========================
@@ -104,7 +104,7 @@ Configure apt-pinning
 ----------------------
 
 There is unfortunately a very nasty bug relating to how ``virt-resize`` handles
-extended partitions that is only fixed in Debian testing.[#]_[#]_[#]_
+extended partitions that is only fixed in Debian testing. [#]_ [#]_ [#]_
 
 .. [#] Bug report: https://bugzilla.redhat.com/show_bug.cgi?id=1169015
 .. [#] Fixed in https://github.com/libguestfs/libguestfs/commit/9d6f0b6a86d68438b27a3d783677c63f39ec6627
@@ -112,6 +112,8 @@ extended partitions that is only fixed in Debian testing.[#]_[#]_[#]_
 
 apt-pinning is the safe way of pulling in packages from testing as needed
 while running Debian stable.
+
+Once you have this done you want to install libguestfs-tools
 
 **TODO** Fix this
 

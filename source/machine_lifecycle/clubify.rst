@@ -37,7 +37,7 @@ LDAP and Kerberos
 
    ## Enable SSH login with Kerberos tickets (by creating a host key)
    # Get Kerberos admin tickets (requires manually typing in /admin password)
-   kinit -S kadmin/admin /admin
+   kinit -S kadmin/admin <username>/admin
    # Create a Kerberos principal for this machine (accept all defaults)
    ktutil get host/$HOSTNAME.club.cc.cmu.edu
 

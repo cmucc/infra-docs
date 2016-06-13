@@ -1,10 +1,10 @@
 Summoning a Daemon Engine
-================================================================================
+========================================
 
 *Note: It would be nice if this was more automated.*
 
 Hardware concerns
-=================
+-----------------
 
 Daemon engines should be among the most powerful systems we have.
 
@@ -14,7 +14,7 @@ processors and 32 GB of RAM.
 They should also have two mirrored 1 TB hard drives.
 
 Disk partitioning
-------------------
+..................
 
 Generally, you will want three partitions:
 
@@ -29,7 +29,7 @@ The system and swap partitions should be mirrored (RAID 1) with mdraid.
 The ZFS partition should be left unallocated.
 
 Install etckeeper
-=================
+-----------------
 
 See the clubification page for justification.
 
@@ -38,15 +38,15 @@ See the clubification page for justification.
    apt-get install etckeeper
 
 Clubification
-=================
+-----------------
 
 Do it.  **TODO: Add link**
 
 ZFS Setup
-=================
+-----------------
 
 Install ZFS packages
-----------------------
+......................
 
 **Note:** This process is subject to change as ZFS on Linux gains increasing
 adoption.  In particular, there are vague plans to get ZFS on Linux source
@@ -56,10 +56,11 @@ Follow the instructions on http://zfsonlinux.org/debian.html.
 If they say anything about the Debian project having added source packages,
 update these instructions or get someone else to do so.
 
-NOTE: DEBIAN CONTRIB PACKAGES NOW AVAILABLE
+Note: there are now packages in Debian unstable for ZFS.  Revisit this after
+the release of Debian 9.
 
 Setup zpool
-------------------
+..................
 
 Create a mirrored pool out of the ZFS partitions,
 and enable lz4 compression by default on the zpool's root filesystem.
@@ -72,7 +73,7 @@ and enable lz4 compression by default on the zpool's root filesystem.
    zfs set compression=lz4 tank
 
 Setup filesystems
-------------------
+..................
 
 Create a filesystem for ``/home``.
 
@@ -89,19 +90,23 @@ Replace "100M" if the value set differs.
    zfs create tank/afs_cache -o mountpoint=/var/cache/openafs -o refreservation=100M
 
 Local home directories
-========================
-
-Add the following line to ``/etc/nslcd.conf``:
+------------------------
 
 .. code-block:: apache
 
-   map passwd homeDirectory "/home/$uid"
+   echo 'map passwd homeDirectory "/home/$uid"' >> /etc/nslcd.conf
+
+   echo "session required pam_mkhomedir.so" >> /etc/pam.d/common-session
+
+   service nscd restart
+   service nslcd restart
+
 
 KVM
-=================
+-----------------
 
 Configure apt-pinning
-----------------------
+......................
 
 There is unfortunately a very nasty bug relating to how ``virt-resize`` handles
 extended partitions that is only fixed in Debian testing. [#]_ [#]_ [#]_
@@ -110,15 +115,14 @@ extended partitions that is only fixed in Debian testing. [#]_ [#]_ [#]_
 .. [#] Fixed in https://github.com/libguestfs/libguestfs/commit/9d6f0b6a86d68438b27a3d783677c63f39ec6627
 .. [#] That corresponds to tag 1.29.14, while Debian Jessie has 1.28.1. See https://packages.debian.org/jessie/libguestfs-tools
 
-apt-pinning is the safe way of pulling in packages from testing as needed
-while running Debian stable.
+.. code-block:: sh
 
-Once you have this done you want to install libguestfs-tools
+   apt-get install libguestfs-tools
 
-**TODO** Fix this
+Check whether or not jessie-updates has something newer than 1.28.1; poke ``hillu`` on Freenode at a respectful frequency if it does not.  (Ask ``grantwu`` if not sure).
 
 Install virtualization packages
--------------------------------
+...............................
 
 Install libvirt packages and
 allow unprivileged access to ``/dev/kvm`` using udev.
@@ -127,13 +131,13 @@ allow unprivileged access to ``/dev/kvm`` using udev.
 
    apt-get install libvirt-bin virtinst
    echo '# make kvm publicly accessible' > /etc/udev/rules.d/60-qemu-system-common.rules
-   echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666"' > /etc/udev/rules.d/60-qemu-system-common.rules
+   echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666"' >> /etc/udev/rules.d/60-qemu-system-common.rules
 
 Networking
-=================
+-----------------
 
 nat-bridge setup
-------------------
+..................
 You will need to get a Hurricane Electric tunnel.
 Allocate a tunnel on https://www.tunnelbroker.net/.
 We currently don't have a systematic way for figuring out which Tunnelbroker account is responsible for the tunnel on any particular VM, but we should.
@@ -150,10 +154,11 @@ Then add the following snippet of XML to
    <ip family='ipv6' address='2001:dead:beef:a::1' prefix='64'/>
 
 forward-bridge setup
----------------------
+.....................
 
 Add this to ``/etc/network/interfaces``:
 
+.. We need a better code-block language here
 .. code-block:: apache
 
    iface eth0 inet manual
@@ -170,7 +175,7 @@ Then run
   systemctl restart networking
 
 qemu-bridge-helper setup
--------------------------
+.........................
 
 Configure qemu-bridge-helper to allow access to the two bridges in
 ``/etc/qemu/bridge.conf``:
@@ -183,7 +188,7 @@ Configure qemu-bridge-helper to allow access to the two bridges in
    ln -s /usr/lib/qemu/qemu-bridge-helper /usr/bin/qemu-bridge-helper
 
 /etc/skel configuration
-------------------------
+........................
 
 .. code-block:: sh
 

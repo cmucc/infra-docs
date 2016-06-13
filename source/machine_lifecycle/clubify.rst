@@ -22,10 +22,7 @@ Clubification packages
    apt-get update && apt-get install cclub-keyring && apt-get update
 
    # TODO: Figure out a better way to version control and present this
-   apt-get install aptitude apt-show-versions atool build-essential curl \
-                   emacs-nox finger git htop lftp moreutils mosh mtr-tiny \
-                   ncdu ncftp netcat ntp python3 ranger rsync screen \
-                   smartmontools strace sudo tcsh tmux unzip vim zip zsh
+   apt-get install aptitude apt-show-versions atool build-essential curl emacs-nox finger git htop lftp moreutils mosh mtr-tiny ncdu ncftp netcat ntp python3 ranger rsync screen smartmontools strace sudo tree tcsh tmux unzip vim zip zsh
 
 LDAP and Kerberos
 ---------------------------
@@ -33,6 +30,7 @@ LDAP and Kerberos
 .. code-block:: sh
 
    ## Install LDAP so the machine knows about club users, and Kerberos for authentication of those users
+   # Note that you should select the "passwd" and "group" for name services for LDAP to provide
    apt-get install libnss-ldapd heimdal-clients libpam-heimdal
 
    ## Enable SSH login with Kerberos tickets (by creating a host key)
@@ -71,12 +69,14 @@ Note that AFS should only be installed on appropriate machines.
 
    apt-get install openafs-client libpam-afs-session openafs-krb5
 
-Note that you should set the AFS cell to `club.cc.cmu.edu` and the cache size
+Note that you should set the AFS cell to ``club.cc.cmu.edu`` and the cache size
 to a reasonable value like 100000 kilobytes (100 megabytes).
 
 Miscellaneous
 ---------------------------
 
-Configure root mail to alias to gripe@club.cc.cmu.edu.
+Configure root mail to alias to gripe@club.cc.cmu.edu by editing ``/etc/aliases``.  You will need to ``dpkg-reconfigure exim4-config`` to get Maildir format.
 
-TODO: Figure out Nagios?
+
+
+TODO: Figure out Nagios?  Serial console?

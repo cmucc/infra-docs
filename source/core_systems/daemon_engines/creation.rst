@@ -28,6 +28,8 @@ The system and swap partitions should be mirrored (RAID 1) with mdraid.
 
 The ZFS partition should be left unallocated.
 
+Note: you should also ``grub-install`` to both disks.
+
 Install etckeeper
 -----------------
 
@@ -173,6 +175,8 @@ Then run
 .. code-block:: sh
 
   systemctl restart networking
+  virsh net-start default
+  virsh net-autostart default
 
 qemu-bridge-helper setup
 .........................

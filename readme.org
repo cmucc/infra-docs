@@ -1,3 +1,7 @@
+* DEPRECATED
+
+*As of 2018-11-17, the CMU Computer Club has discontinued use of the "daemon engine" virtualization environment, in favor of our newer [[https://wiki.club.cc.cmu.edu/org/ccwiki/Services/VMs/OPC%20User%20Guide][OPC Xen infrastructure]].*
+
 # Note: Explicitly separate things that are specific to the CClub environment, from things that are generally applicable.
 * Where am I?
   You're on a CMU Computer Club "daemon engine", useful for hosting long-running network services, virtual machines, containers, or whatever you want!
